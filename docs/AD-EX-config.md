@@ -67,6 +67,7 @@ Runspace         : System.Management.Automation.Runspaces.LocalRunspace
 
 * 依次点击开始——管理工具——IIS管理器——网站——Default Web Site，单击powershell后，找到中间IIS类别下的**身份验证**，双击进入，右键启用基本身份验证。
 * 重启IIS，打开powershell，输入iisreset命令，看到如下提示后即可
+
 ```powershell
 PS C:\> iisreset
 正在尝试停止...
