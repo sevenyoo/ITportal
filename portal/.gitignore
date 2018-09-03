@@ -13,7 +13,5 @@
 .idea/itportal.iml
 .idea/misc.xml
 .idea/workspace.xml
-db.sqlite3
 *.xml
 *.iml
-*.sqlite3
