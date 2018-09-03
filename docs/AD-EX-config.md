@@ -69,7 +69,6 @@ Runspace         : System.Management.Automation.Runspaces.LocalRunspace
 * 重启IIS，打开powershell，输入iisreset命令，看到如下提示后即可
 ```powershell
 PS C:\> iisreset
-
 正在尝试停止...
 Internet 服务已成功停止
 正在尝试启动...
