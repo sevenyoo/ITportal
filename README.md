@@ -25,14 +25,14 @@ Exchange服务器 |4.6 | 4.0|无要求
 
 **请按照如下文档调整AD/Exchange配置**
 
-[调整AD查询数量限制](docs/AD-EX-config.md)
+[AD\Exchange服务器基础配置](docs/AD-EX-config.md)
 
 
 
 
-### [it-core部署文档](./core/README.md)
-### [it-portal部署文档](./portal/README.md)
-### [third-party dfs部署说明](https://www.baidu.com)
+### [core部署文档](./core/README.md)
+### [portal部署文档](./portal/README.md)
+### [plugins dfs部署说明](./plugins/dfs/README.md)
 
 
 ## 配置使用说明
@@ -43,4 +43,4 @@ Exchange服务器 |4.6 | 4.0|无要求
 
 ## TODO
 
-- [] it-core代码使用Python重构
+- [] core代码使用Python重构
