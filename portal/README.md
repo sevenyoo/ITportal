@@ -8,6 +8,7 @@ IT Portal 提供了用户自助界面和管理配置界面
 本系统需要`Python 3.X`+`MYSQL 5.x`支持
 
 1. 创建DB并导入itdev-portal.sql
+
 ``` 
 MariaDB [(none)]> create database itportal;
 Query OK, 1 row affected (0.00 sec)
@@ -19,6 +20,7 @@ MariaDB [itportal]>source itdev-portal.sql
 ```
 
 2. 基础环境安装并启动 请参见:
+
 
 [《Centos7+Python3+Django+Nginx+uWsgi部署》](../docs/python.md)
 
