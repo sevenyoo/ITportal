@@ -111,7 +111,7 @@ Internet 服务已成功启动
  
 ![image](./imgs/adconfig/ad4.png)
  
-(5)```.msDS-MinimumPasswordLength```，设置密码长度最小值为10;
+(5)```.msDS-MinimumPasswordLength```，设置密码长度最小值为8;
 
 **注意：此处请和自己域密码策略一致**
 
@@ -125,7 +125,7 @@ Internet 服务已成功启动
 ![image](./imgs/adconfig/ad6.png)
  
  
-(7)```.msDS-MaximumPasswordAge```，设置密码最常使用期限为90:00:00:00(90天);
+(7)```.msDS-MaximumPasswordAge```，设置密码最长使用期限为90:00:00:00(90天);
 
 **注意：此处请和自己域密码策略一致**
 

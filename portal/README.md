@@ -55,7 +55,6 @@ MariaDB [itportal]>source itdev-portal.sql
 连接exchange服务器进行操作时使用，需要填写ip地址，具有最大管理权限账号的（sAMAccountName）值，密码，域名
 
 ![image](../docs/imgs/admin/5.png)
- 
 ### IT人员隶属组配置信息
 
 某些功能指定了只对IT人员可见，该配置指定IT人员所在群组的（sAMAccountName）值
@@ -102,6 +101,11 @@ MariaDB [itportal]>source itdev-portal.sql
  
 注意:当关闭文件夹权限控制后，你无法在前台看到任何文件夹相关的页面
 
+![image](../docs/imgs/admin/42.png)
+
+dfs_api :这个是安装API的服务器，这个服务器需要对文件夹具有最高权限
+修改这个也会同步mysql数据库的账户密码到 API
+
 ![image](../docs/imgs/admin/14.png)
  
 **重要：文件服务器—文件夹层级和权限控制**
@@ -125,7 +129,7 @@ MariaDB [itportal]>source itdev-portal.sql
  
 ### 文件夹基础配置
 
-1.	DFS-OU ： 是在AD存放文件夹权限组的OU 的DN属性 例：OU=DFSgroups,OU=LYGroups,DC=testyunwei,DC=com
+1.	DFS-OU ： 是在AD存放文件夹权限组的OU 的DN属性 例：OU=DFS,OU=xxx,DC=xx,DC=xx
 
 
 ![image](../docs/imgs/admin/19.png)
@@ -143,7 +147,8 @@ MariaDB [itportal]>source itdev-portal.sql
 
 ![image](../docs/imgs/admin/20.png)
  
-文件路径 ： 安装控制文件夹权限的服务器，上面对应的文件路径（支持映射网络驱动器路径） 例：E:\02.研发中心
+文件路径 ：安装文件API的服务器，上面对应的文件路径（支持映射网络驱动器路径） 例：E:\02.研发中心
+ **重要：在安装文件API的服务器上,必须将所有需管理的共享目录,通过映射网络驱动器的方式,链接到该服务器**
 
 
 ![image](../docs/imgs/admin/21.png)
@@ -210,7 +215,6 @@ A：对照成部分原有的第一层目录，第二层目录，权限的变小�
 
 ![image](../docs/imgs/admin/27.png)
 
-![image](../docs/imgs/admin/28.png)
 
  
 
@@ -220,7 +224,6 @@ A：对照成部分原有的第一层目录，第二层目录，权限的变小�
 
 ![image](../docs/imgs/admin/29.png)
 
-![image](../docs/imgs/admin/30.png)
 
 
 
@@ -231,42 +234,53 @@ A：对照成部分原有的第一层目录，第二层目录，权限的变小�
  
 1.外部流程审批调用接口
 
- 
- 
- 接口必须为Post方法,此接口传入参数为json格式。
- 
- ```
-传入参数格式:
-
-{"status":0, "message": {"id":"1","username":"测试","displayname":"测试","types":"测试","applytype":"测试","applydetail":"测试"}}返回参数格式:{"status": 0, "message": ""}; 
+* 配置审批流程接入后，当有用户申请一个审批单生成后，平台发起一个post请求，调用配置的外部接口，传递申请信息
+* 请求URL部分为配置页面填写的**接收流程传入值url**
+* 请求headers部分固定为**headers = { "Content-Type": "application/json" }**
+```python
+ { 
+ "Content-Type": "application/json" 
+ } 
 ```
-0 表示成功,其他表示失败
- 
- 
- 
+* 请求body为
+```python
+{
+"status":0, #固定为0
+"message":
+    {
+    "id":"1", #申请单ID，此为唯一标识，审批回调时，使用此ID指定此申请单
+    "username":"测试", #申请用户的ad账号，可根据此值获得用户审批人
+    "displayname":"测试", #用户ad账号的显示名称
+    "types":"测试", #用户申请单分类，此值和ID一起，作为审批回调参数
+    "applytype":"测试", #申请权限名称
+    "applydetail":"测试" #申请权限值
+    }
+}
+```
 
-
+***
 2. 调用外部OA或其他workflow接口
 
 
+* 当用户申请单审批状态发生变化时，外部平台调用此接口，用来做审批后的执行操作
+* **URL：** http://平台发布ip+端口/api/approvalapi/
+* body部分为
+```python
+{
+"id":"1", #申请单ID，此值是外部接口里message里的id参数
+"types":"测试", #用户申请单分类，此值是外部接口里message里的types参数
+"status":"1" #审批意见（1：同意，0：不同意）
+}
+```
+* 返回值部分为
+```python
+{
+"isSuccess": True, #审批接口回调是否成功，如果不成功，需要根据message查看原因
+"message": "审批意见已提交" #详情信息，如果isSuccess为True，则不需要关注此值
+}
+```
 
-
-
-ITPortal平台ip+端口+/api/approvalapi/
-方法：post
-参数：
-“id”:1.（审批单ID值，使用申请调用接口中message[‘id’]里的值）
-“types”:（审批单类型，使用申请调用接口中message[‘types‘]里的值）
-“status”:(审批意见，1：同意。0：不同意)
-返回值：
-{"isSuccess": isSuccess, "message": message}
-isSuccess ：true/false （调用是否成功，true：成功.false：失败）
-message:（详情，调用成功不用关注，调用失败message写原因）
-例子
- 
-“”
-
-
+***
 
 短信接口 配置用于推送短信非必配项
  
@@ -276,23 +290,33 @@ message:（详情，调用成功不用关注，调用失败message写原因）
 
 
 基础配置，
- 邮箱群组OU：用户申请邮箱群组，领导审批后账号新建放置的OU
+
+![image](../docs/imgs/admin/45.png)
+
+邮箱群组OU：用户申请邮箱群组，领导审批后账号新建放置的OU（请填写OU的 distinguishedName）
 密码长度限制：用户修改密码提示限制。重置密码生成的长度
-兼职账号OU：用户申请兼职账号，账号创建放置的OU
-兼职账号组： 此配置限制用户申请兼职账号，只有在此组中的成员，才有权限申请
-公共邮箱管理者栏位： 此配置用于判断公共邮箱管理者。栏位内会写入管理者AD账号。
-公共邮箱放置DB：此配置用于新建公共邮箱，公共邮箱新建的邮箱数据库
-防锁定组：此配置用于账号被锁定，加入此组解锁
-公共邮箱OU: 此配置用户新建公共邮箱时，账号放置的OU
-上网权限组/VPN权限组/Wifi权限组：此配置用于用户申请上网权限/VPN权限/无线权限，判断上网权限。请 填写权限组名称，与组名描述。可填写多个权限组名称。
+兼职账号OU：用户申请兼职账号，账号创建放置的OU （请填写OU的 distinguishedName）
+兼职账号组： 此配置限制用户申请兼职账号，只有在此组中的成员，才有权限申请 （请填写组名）
+公共邮箱管理者栏位： 此配置用于判断公共邮箱管理者。栏位内会写入管理者AD账号（请填写属性编辑器中的英文属性,不支持中文）
+例如(physicalDeliveryOfficeName 对应办公室栏位)
+
+![image](../docs/imgs/admin/43.png)
+
+![image](../docs/imgs/admin/44.png)
+
+公共邮箱放置DB：此配置用于新建公共邮箱，公共邮箱新建的邮箱数据库（请填写ExchangeDB）
+防锁定组：此配置用于账号被锁定，加入此组解锁（请填写组名）
+公共邮箱OU: 此配置用户新建公共邮箱时，账号放置的OU （请填写OU的 distinguishedName）
+上网权限组/VPN权限组/Wifi权限组：此配置用于用户申请上网权限/VPN权限/无线权限，判断上网权限。请 填写权限组名，与组名描述。可填写多个权限组名称。
  
 OU请填写OU的distinguishedName属性
-权限组名称请填写 组名称
+权限组名称请填写 组名
 
  
 
 
 邮箱账号配置
 此配置用于发送用户申请，领导审批发送邮箱提醒
+![image](../docs/imgs/admin/46.png)
  
 
