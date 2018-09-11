@@ -38,17 +38,17 @@ make install
 ```
 python
 ```
-![python版本](https://note.youdao.com/yws/public/resource/0d2a515ec1bea2a9b3b050d52876f15f/xmlnote/C64E8E0CDE054D24A144CF0C365F139D/7662)
+![python版本](/Users/haifeng/opensource/ITPortal/docs/imgs/python/01.python2.7.png)
 ```
 exit() #退出
 /usr/python35/bin/python3.5  #python3.5
 ```
-![python3.5版本](https://note.youdao.com/yws/public/resource/0d2a515ec1bea2a9b3b050d52876f15f/xmlnote/04563D5C08D54F209284524DAC40A4AE/7667)
+![python3.5版本](/Users/haifeng/opensource/ITPortal/docs/imgs/python/02.python3.5.png)
 ```
 exit() #退出
 /usr/python35/bin/python3.5 -m pip list #查看已安装的包
 ```
-![pip_list](https://note.youdao.com/yws/public/resource/0d2a515ec1bea2a9b3b050d52876f15f/xmlnote/777653CCE59940D197FFBD615F0214BB/7666)
+![pip_list](/Users/haifeng/opensource/ITPortal/docs/imgs/python/03.python3.5piplist.png)
 
 
 ##### 006.下面开始用 pip 安装运行程序必须的包
@@ -104,11 +104,11 @@ mkdir www    # 新建一个www的文件夹
 cd /www     # 进入这个文件夹
 ```
 ###### 打开 xftp 5
-![打开 xftp 5](https://note.youdao.com/yws/public/resource/0d2a515ec1bea2a9b3b050d52876f15f/xmlnote/35776C94248E4AC981437AF85BD273D0/7669)
+![打开 xftp 5](/Users/haifeng/opensource/ITPortal/docs/imgs/python/04.xftp5.png)
 ###### 找到新建的文件夹
-![找到新建的文件夹](https://note.youdao.com/yws/public/resource/0d2a515ec1bea2a9b3b050d52876f15f/xmlnote/358F11DC55514737974B77078BD94FBB/7671)
+![找到新建的文件夹](/Users/haifeng/opensource/ITPortal/docs/imgs/python/05.xftp5.png)
 
-![移动到系统](https://note.youdao.com/yws/public/resource/0d2a515ec1bea2a9b3b050d52876f15f/xmlnote/7237140763194783AE829DCADE7F3ED6/7673)
+![移动到系统](/Users/haifeng/opensource/ITPortal/docs/imgs/python/06.xftp5.png)
 
 
 ##### 008.安装nginx
@@ -116,7 +116,7 @@ cd /www     # 进入这个文件夹
 yum install nginx  #安装nginx
 systemctl status nginx   #查看 nginx 是否启用
 ```
-![nginx](https://note.youdao.com/yws/public/resource/0d2a515ec1bea2a9b3b050d52876f15f/xmlnote/461CEB2C03414C17AEEA928C4DA1FB79/7675)
+![nginx](/Users/haifeng/opensource/ITPortal/docs/imgs/python/07.nginx.png)
 
 ```
 systemctl start nginx   #开启
@@ -126,7 +126,7 @@ systemctl restart nginx  #重启
 #修改nginx 配置
 cd /etc/nginx
 ```
-![nginx](https://note.youdao.com/yws/public/resource/0d2a515ec1bea2a9b3b050d52876f15f/xmlnote/56D7E37F2B53468AAA1947917065C9B7/7677)
+![nginx](/Users/haifeng/opensource/ITPortal/docs/imgs/python/08.xftp.png)
 ```
 # nginx.conf  是配置文件，修改前，请先备份
 #主要配置说明
@@ -175,7 +175,7 @@ systemctl restart nginx  #重启nginx
 #关闭uwsgi
 pkill -9 uwsgi #关闭uwsgi
 ```
-![uwsgi](https://note.youdao.com/yws/public/resource/0d2a515ec1bea2a9b3b050d52876f15f/xmlnote/E5945E7123EF4A3EACA3F31B20C6C735/7679)
+![uwsgi](/Users/haifeng/opensource/ITPortal/docs/imgs/python/09.python_uwsgi.png)
 
 ##### 010.参考文档
 - [Django Nginx+uwsgi 安装配置](http://www.runoob.com/django/django-nginx-uwsgi.html)
